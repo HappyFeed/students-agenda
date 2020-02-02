@@ -103,7 +103,15 @@ public class AgendaController {
 
     @FXML
     void fillData(ActionEvent event) {
-    	
+    	buttonGuardar.setText("guardar");
+    	buttonGuardar.setVisible(true);
+    	labelApellidoContacto.setDisable(true);
+    	labelCodigo.setDisable(true);
+    	labelEdadContacto.setDisable(true);
+    	labelNombreContacto.setDisable(true);
+    	labelSemestre.setDisable(true);
+    	LabelCarrera.setDisable(true);
+    	fotoContact.setDisable(true);
     }
 
     @FXML
@@ -118,18 +126,17 @@ public class AgendaController {
     
     @FXML
     void guardarData(ActionEvent event) {
-    	int nContact=Integer.parseInt(contactNumber.getText());
-    	Contact m= friends.get(nContact-1);
-    	m.setAge(Integer.parseInt(labelEdadContacto.getText()));
-    	m.setCode(labelCodigo.getText());
-    	m.setName(labelNombreContacto.getText());
-    	m.setLastName(labelApellidoContacto.getText());
-    	m.setSemester(labelSemestre.getText());
+    	if(buttonGuardar.getText().equals("actualizar")) {
+    		actualizarInfo();
+    	}else {
+    		guardarContacto();
+    	}
     	
     }
     
     @FXML
     void updateData(ActionEvent event) {
+    	buttonGuardar.setText("actualizar");
     	buttonGuardar.setVisible(true);
     	labelApellidoContacto.setDisable(true);
     	labelCodigo.setDisable(true);
@@ -140,5 +147,21 @@ public class AgendaController {
     	fotoContact.setDisable(true);
     }
 
+    public void actualizarInfo() {
+    	int nContact=Integer.parseInt(contactNumber.getText());
+    	Contact m= friends.get(nContact-1);
+    	m.setAge(Integer.parseInt(labelEdadContacto.getText()));
+    	m.setCode(labelCodigo.getText());
+    	m.setName(labelNombreContacto.getText());
+    	m.setLastName(labelApellidoContacto.getText());
+    	m.setSemester(labelSemestre.getText());
+    }
+    
+    public void guardarContacto() {
+    	contactNumber.setText(""+friends.size());
+    	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelNombreContacto.getText(),Integer.parseInt(labelEdadContacto.getText()));
+    	friends.add(friends.size(),newContact);
+    }
+    
 }
 

@@ -4,32 +4,21 @@ import javafx.scene.image.Image;
 
 public class Contact {
 
-	private String id;
 	private Image avatar;
 	private String code;
 	private String semester;
 	private String name;
 	private String lastName;
-	private String email;
-	private String phone;
 	private int age;
 
-	public Contact() {
-		// TODO - implement Contact.Contact
-		throw new UnsupportedOperationException();
+	public Contact(String code, String semester, String name, String lastName, int age) {
+		this.code=code;
+		this.semester=semester;
+		this.name=name;
+		this.lastName=lastName;
+		this.age=age;
 	}
 
-	public String getId() {
-		return this.id;
-	}
-
-	/**
-	 * 
-	 * @param id
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public Image getAvatar() {
 		return this.avatar;
@@ -89,30 +78,6 @@ public class Contact {
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	/**
-	 * 
-	 * @param email
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return this.phone;
-	}
-
-	/**
-	 * 
-	 * @param phone
-	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public int getAge() {
