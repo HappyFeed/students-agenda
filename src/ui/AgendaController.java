@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -22,13 +23,13 @@ public class AgendaController {
     private ImageView fotoContact;
 
     @FXML
-    private Label labelNombreContacto;
+    private TextField LabelCarrera;
 
     @FXML
-    private Label labelApellidoContacto;
+    private TextField labelSemestre;
 
     @FXML
-    private Label labelEdadContacto;
+    private TextField labelCodigo;
 
     @FXML
     private MenuItem editarContact;
@@ -49,13 +50,13 @@ public class AgendaController {
     private Button buttonBuscar;
 
     @FXML
-    private Label LabelCarrera;
+    private TextField labelNombreContacto;
 
     @FXML
-    private Label labelSemestre;
+    private TextField labelApellidoContacto;
 
     @FXML
-    private Label labelCodigo;
+    private TextField labelEdadContacto;
 
     @FXML
     private ListView<String> textAreaMaterias;
@@ -83,6 +84,7 @@ public class AgendaController {
     	labelSemestre.setDisable(true);
     	LabelCarrera.setDisable(true);
     	fotoContact.setDisable(true);
+    	contactNumber.setText("1");
     }
     
     
@@ -105,13 +107,13 @@ public class AgendaController {
     void fillData(ActionEvent event) {
     	buttonGuardar.setText("guardar");
     	buttonGuardar.setVisible(true);
-    	labelApellidoContacto.setDisable(true);
-    	labelCodigo.setDisable(true);
-    	labelEdadContacto.setDisable(true);
-    	labelNombreContacto.setDisable(true);
-    	labelSemestre.setDisable(true);
-    	LabelCarrera.setDisable(true);
-    	fotoContact.setDisable(true);
+    	labelApellidoContacto.setDisable(false);
+    	labelCodigo.setDisable(false);
+    	labelEdadContacto.setDisable(false);
+    	labelNombreContacto.setDisable(false);
+    	labelSemestre.setDisable(false);
+    	LabelCarrera.setDisable(false);
+    	fotoContact.setDisable(false);
     }
 
     @FXML
@@ -131,13 +133,7 @@ public class AgendaController {
     	}else {
     		guardarContacto();
     	}
-    	
-    }
-    
-    @FXML
-    void updateData(ActionEvent event) {
-    	buttonGuardar.setText("actualizar");
-    	buttonGuardar.setVisible(true);
+    	buttonGuardar.setVisible(false);
     	labelApellidoContacto.setDisable(true);
     	labelCodigo.setDisable(true);
     	labelEdadContacto.setDisable(true);
@@ -145,6 +141,19 @@ public class AgendaController {
     	labelSemestre.setDisable(true);
     	LabelCarrera.setDisable(true);
     	fotoContact.setDisable(true);
+    }
+    
+    @FXML
+    void updateData(ActionEvent event) {
+    	buttonGuardar.setText("actualizar");
+    	buttonGuardar.setVisible(true);
+    	labelApellidoContacto.setDisable(false);
+    	labelCodigo.setDisable(false);
+    	labelEdadContacto.setDisable(false);
+    	labelNombreContacto.setDisable(false);
+    	labelSemestre.setDisable(false);
+    	LabelCarrera.setDisable(false);
+    	fotoContact.setDisable(false);
     }
 
     public void actualizarInfo() {
@@ -161,6 +170,10 @@ public class AgendaController {
     	contactNumber.setText(""+friends.size());
     	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelNombreContacto.getText(),Integer.parseInt(labelEdadContacto.getText()));
     	friends.add(friends.size(),newContact);
+    	contactNumber.setText(""+(friends.size()+1));
+    	if(friends !=null) {
+    		System.out.println("guardo");
+    	}
     }
     
 }
