@@ -59,8 +59,8 @@
          </font>
       </Label>
       <ComboBox fx:id="comboBoxBusqueda" layoutX="293.0" layoutY="1.0" prefWidth="150.0" promptText="Busqueda por" />
-      <TextField layoutX="447.0" layoutY="1.0" />
-      <Button fx:id="buttonBuscar" layoutX="587.0" layoutY="1.0" mnemonicParsing="false" onAction="#buscarContacto" text="Buscar">
+      <TextField fx:id="barraBusqueda" layoutX="447.0" layoutY="1.0" />
+      <Button fx:id="buttonBuscar" layoutX="603.0" layoutY="1.0" mnemonicParsing="false" onAction="#buscarContacto" text="Buscar">
          <font>
             <Font name="Batang" size="12.0" />
          </font>
