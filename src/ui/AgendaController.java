@@ -269,6 +269,71 @@ public class AgendaController {
         return -1; 
     }
     
+    public void sortByNames(ArrayList<Contact> friends) { 
+        int n = friends.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (friends.get(j).getName().compareTo(friends.get(j+1).getName()) > 0) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Contact temp = friends.get(j); 
+                    friends.set(j, friends.get(j+1)); 
+                    friends.set(j+1, temp); 
+                } 
+    }
+    
+    public void sortByLastnames(ArrayList<Contact> friends) { 
+        int n = friends.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (friends.get(j).getLastName().compareTo(friends.get(j+1).getLastName()) > 0) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Contact temp = friends.get(j); 
+                    friends.set(j, friends.get(j+1)); 
+                    friends.set(j+1, temp); 
+                } 
+    }
+    
+    public void sortByAge(ArrayList<Contact> friends) { 
+        int n = friends.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (friends.get(j).getAge() > friends.get(j+1).getAge()) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Contact temp = friends.get(j); 
+                    friends.set(j, friends.get(j+1)); 
+                    friends.set(j+1, temp); 
+                } 
+    }
+    
+    public void sortByCode(ArrayList<Contact> friends) { 
+        int n = friends.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (friends.get(j).getCode().compareTo(friends.get(j+1).getCode()) > 0) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Contact temp = friends.get(j); 
+                    friends.set(j, friends.get(j+1)); 
+                    friends.set(j+1, temp); 
+                } 
+    }
+    
+    public void sortBySemester(ArrayList<Contact> friends) { 
+        int n = friends.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (friends.get(j).getSemester().compareTo(friends.get(j+1).getSemester()) > 0) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Contact temp = friends.get(j); 
+                    friends.set(j, friends.get(j+1)); 
+                    friends.set(j+1, temp); 
+                } 
+    }
+    
     
     
     @FXML
