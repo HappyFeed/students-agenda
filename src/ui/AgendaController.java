@@ -1,18 +1,32 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,8 +38,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import model.Contact;
+import model.Subject;
 
 public class AgendaController {
 
@@ -60,6 +76,9 @@ public class AgendaController {
     private ComboBox<String> comboBoxBusqueda;
 
     @FXML
+    private TextArea informations;
+    
+    @FXML
     private Button buttonBuscar;
 
     @FXML
@@ -92,7 +111,7 @@ public class AgendaController {
     @FXML
     private Menu sortBy;
     
-    ObservableList<String> list = FXCollections.observableArrayList("Modelado","Discretas");
+    ObservableList<String> list = FXCollections.observableArrayList();
 
     @FXML
     void buscarContacto(ActionEvent event) {
@@ -199,6 +218,13 @@ public class AgendaController {
     	        	labelSemestre.setText(friends.get(i).getSemester());
     	        	LabelCarrera.setText(friends.get(i).getCarrera());  
     	        	Image n=whichIs(friends.get(i).getName());
+    	        	if(friends.get(i).getSubject()!=null) {
+        	        	for (int k = 0; k < friends.get(i).getSubject().size(); k++) {
+        	        		textAreaMaterias.getItems().add(friends.get(i).getSubject().get(k).getName());	
+    					}
+    	        	}
+
+    	        	
     	        	if(n!=null) {
     	        		fotoContact.setImage(n);
     	        	}
@@ -217,6 +243,7 @@ public class AgendaController {
     	LabelCarrera.setText("");
     	Image n=new Image(new File("profilePic/pic6.png").toURI().toString());
     	fotoContact.setImage(n);
+    	textAreaMaterias.getItems().clear();
     }
     
     @FXML
@@ -420,12 +447,13 @@ public class AgendaController {
     	try {    		
     		File archivo= new File(SAVE_PLAYERS);
     		if(archivo.exists()) {
-    		  System.out.println("entro");
 			  ObjectInputStream ois= new ObjectInputStream(new FileInputStream(archivo));
 			  savedUsers=(ArrayList<Contact>) ois.readObject();
 			  ois.close();
+			  System.out.println(savedUsers.size());
     		}else {
     			savedUsers= readFirst();
+    			System.out.println(savedUsers.size());
     		}        		         	
 		} catch (IOException e ) {
 			e.printStackTrace();
@@ -509,7 +537,8 @@ public class AgendaController {
     	comboBoxBusqueda.getItems().add("Semestre");
     	
     	//The information for the listView where the contacts are going to be shown
-    	textAreaMaterias.setItems(list);
+    	
+    	
     	save();
     }
     
@@ -560,6 +589,83 @@ public class AgendaController {
     		default:
     			break;
     	}
+    }
+    
+    @FXML
+    void agregarMateria(ActionEvent event) {
+    	// Create the custom dialog.
+    	Dialog<Pair<String, String>> dialog = new Dialog<>();
+    	dialog.setTitle("Login Dialog");
+    	dialog.setHeaderText("Look, a Custom Login Dialog");
+
+    	// Set the icon (must be included in the project).
+    	//dialog.setGraphic(new ImageView(this.getClass().getResource("/profilePic/pic 1.jpg").toString()));
+
+    	// Set the button types.
+    	ButtonType loginButtonType = new ButtonType("Save", ButtonData.OK_DONE);
+    	dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+    	// Create the username and password labels and fields.
+    	GridPane grid = new GridPane();
+    	grid.setHgap(10);
+    	grid.setVgap(10);
+    	grid.setPadding(new Insets(20, 150, 10, 10));
+
+    	TextField nombre = new TextField();
+    	nombre.setPromptText("Nombre");
+    	TextField nrc = new TextField();
+    	nrc.setPromptText("NRC");
+    	TextField info = new TextField();
+    	info.setPromptText("Info");
+    	TextField creditos = new TextField();
+    	creditos.setPromptText("Creditos");
+    	
+
+    	grid.add(new Label("Nombre:"), 0, 0);
+    	grid.add(nombre, 1, 0);
+    	grid.add(new Label("NRC:"), 0, 1);
+    	grid.add(nrc, 1, 1);
+    	grid.add(new Label("Info:"), 2, 0);
+    	grid.add(info, 3, 0);
+    	grid.add(new Label("Creditos:"), 2, 1);
+    	grid.add(creditos, 3, 1);
+    	
+
+    	// Enable/Disable login button depending on whether a username was entered.
+    	Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+    	loginButton.setDisable(true);
+
+    	// Do some validation (using the Java 8 lambda syntax).
+    	nombre.textProperty().addListener((observable, oldValue, newValue) -> {
+    	    loginButton.setDisable(newValue.trim().isEmpty());
+    	});
+
+    	dialog.getDialogPane().setContent(grid);
+
+    	// Request focus on the username field by default.
+    	Platform.runLater(() -> nombre.requestFocus());
+
+    	Optional<Pair<String, String>> result = dialog.showAndWait();
+    	
+    	String name = nombre.getText();
+    	String NRC = nrc.getText();
+    	String Info = info.getText();
+    	int credits = Integer.parseInt(creditos.getText());
+    	
+    	guardarMateria(name, NRC, Info, credits);
+
+    }
+    
+    void guardarMateria(String name, String NRC, String Info, int credits) {
+    	Subject sub = new Subject(name, credits, NRC, Info);
+    	friends.get(Integer.parseInt(contactNumber.getText())-1).setSubject(sub);
+    }
+    
+    @FXML
+    void showSubjectInformation(MouseEvent event) {
+    	friends.get(Integer.parseInt(contactNumber.getText())-1).sortByNames();
+    	int n=friends.get(Integer.parseInt(contactNumber.getText())-1).binarySearchSubject(friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject(), 0, friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().size()-1,nameSubject );
+    	informations.setText(friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().get(n).getInfo());
     }
 }
 

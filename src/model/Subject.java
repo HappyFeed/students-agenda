@@ -9,9 +9,12 @@ public class Subject implements Serializable{
 	private String nrc;
 	private String info;
 
-	public Subject() {
+	public Subject(String name, int credits, String nrc, String info) {
 		// TODO - implement Subject.Subject
-		throw new UnsupportedOperationException();
+		this.name = name;
+		this.credits = credits;
+		this.nrc = nrc;
+		this.info = info;
 	}
 
 	public String getName() {

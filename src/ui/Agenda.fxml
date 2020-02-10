@@ -75,13 +75,13 @@
             <TextField fx:id="labelCodigo" promptText="Codigo" />
          </children>
       </VBox>
-      <ListView fx:id="textAreaMaterias" layoutX="60.0" layoutY="252.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="textAreaMaterias" layoutX="60.0" layoutY="252.0" onMouseClicked="#showSubjectInformation" prefHeight="200.0" prefWidth="200.0" />
       <Label layoutX="60.0" layoutY="229.0" text="Materias matriculadas">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextArea layoutX="347.0" layoutY="252.0" prefHeight="200.0" prefWidth="311.0" />
+      <TextArea fx:id="informations" layoutX="347.0" layoutY="252.0" prefHeight="200.0" prefWidth="311.0" />
       <Label layoutX="347.0" layoutY="233.0" text="Info">
          <font>
             <Font size="16.0" />
@@ -91,5 +91,6 @@
       <TextField fx:id="labelNombreContacto" layoutX="167.0" layoutY="95.0" promptText="Nombre" />
       <TextField fx:id="labelApellidoContacto" layoutX="167.0" layoutY="134.0" promptText="Apellido" />
       <TextField fx:id="labelEdadContacto" layoutX="167.0" layoutY="173.0" promptText="Edad" />
+      <Button layoutX="155.0" layoutY="460.0" mnemonicParsing="false" onAction="#agregarMateria" text="Agregar Materia" />
    </children>
 </Pane>

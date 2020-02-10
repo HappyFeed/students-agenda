@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 
@@ -15,7 +16,7 @@ public class Contact implements Serializable{
 	private String carrera;
 	private int age;
 
-	private Subject subjects;
+	private ArrayList<Subject> subjects;
 	
 	public Contact(String code, String semester, String name, String lastName, int age, String carrera) {
 		this.code=code;
@@ -25,6 +26,7 @@ public class Contact implements Serializable{
 		this.age=age;
 		this.carrera=carrera;
 		this.avatar=avatar;
+		subjects = new ArrayList<Subject>();
 	}
 
 
@@ -113,18 +115,17 @@ public class Contact implements Serializable{
 		this.age = age;
 	}
 
-	public Subject getSubject() {
-		// TODO - implement Contact.getSubject
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * 
 	 * @param subject
 	 */
 	public void setSubject(Subject subject) {
 		// TODO - implement Contact.setSubject
-		throw new UnsupportedOperationException();
+		subjects.add(subject);
+	}
+	
+	public ArrayList<Subject> getSubject(){
+		return subjects;
 	}
 
 	public int promCredits() {
@@ -136,5 +137,33 @@ public class Contact implements Serializable{
 		// TODO - implement Contact.numberOfSubject
 		throw new UnsupportedOperationException();
 	}
+	
+    public int binarySearchSubject(ArrayList<Subject> subject, int l, int r, String x){ 
+        if (r >= l) { 
+            int mid = l + (r - l) / 2; 
 
+            if (subject.get(mid).getName().equalsIgnoreCase(x)) {
+                return mid; 
+            }
+            if (subject.get(mid).getName().compareTo(x) > 0) { 
+                return binarySearchSubject(subject, l, mid - 1, x); 
+            }
+            return binarySearchSubject(subject, mid + 1, r, x); 
+        } 
+        return -1; 
+    }
+
+    public void sortByNames() { 
+        int n = subjects.size(); 
+        for (int i = 0; i < n-1; i++) 
+            for (int j = 0; j < n-i-1; j++) 
+                if (subjects.get(j).getName().compareTo(subjects.get(j+1).getName()) > 0) 
+                { 
+                    // swap arr[j+1] and arr[i] 
+                    Subject temp = subjects.get(j); 
+                    subjects.set(j, subjects.get(j+1)); 
+                    subjects.set(j+1, temp); 
+                } 
+    }
+    
 }
