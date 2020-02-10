@@ -48,9 +48,6 @@ public class AgendaController {
 
     @FXML
     private MenuItem editarContact;
-
-    @FXML
-    private Menu salirOption;
     
     @FXML
     private MenuItem borrarContact;
@@ -90,6 +87,9 @@ public class AgendaController {
     
     @FXML
     private TextField barraBusqueda;
+    
+    @FXML
+    private Menu sortBy;
     
     ObservableList<String> list = FXCollections.observableArrayList("Modelado","Discretas");
 
@@ -136,11 +136,6 @@ public class AgendaController {
     	
     }
  
-
-    @FXML
-    void cerrarAgenda(ActionEvent event) {
-    	System.exit(0);
-    }
     @FXML
     void delatedData(ActionEvent event) {
     	int nDelated= Integer.parseInt(contactNumber.getText())-1;
@@ -475,6 +470,55 @@ public class AgendaController {
     	//The information for the listView where the contacts are going to be shown
     	textAreaMaterias.setItems(list);
     	
+    }
+    
+
+    @FXML
+    void sortAge(ActionEvent event) {
+    	sort("Edad");
+    }
+
+    @FXML
+    void sortByCode(ActionEvent event) {
+    	sort("Codigo");
+    }
+
+    @FXML
+    void sortLastName(ActionEvent event) {
+    	sort("Apellido");
+    }
+
+    @FXML
+    void sortName(ActionEvent event) {
+    	sort("Nombre");
+    }
+
+    @FXML
+    void sortSemestre(ActionEvent event) {
+    	sort("Semestre");
+    }
+    
+    void sort(String kind) {
+    	String parametroBusqueda = kind;
+    	switch(parametroBusqueda) {
+    		case "Nombre":
+    			sortByNames();
+    			break;
+    		case "Apellido":
+    			sortByLastnames();
+    			break;
+    		case "Edad":
+    			sortByAge();
+    			break;
+    		case "Codigo":
+    			sortByCode();
+    			break;
+    		case "Semestre":
+    			sortBySemester();
+    			break;
+    		default:
+    			break;
+    	}
     }
 }
 

@@ -25,12 +25,13 @@
       </ImageView>
       <MenuBar layoutY="2.0" prefHeight="24.0" prefWidth="769.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Ordenar Por">
+          <Menu fx:id="sortBy" mnemonicParsing="false" text="Ordenar Por">
             <items>
-              <MenuItem mnemonicParsing="false" text="Nombre" />
-                  <MenuItem mnemonicParsing="false" text="Apellido" />
-                  <MenuItem mnemonicParsing="false" text="Edad" />
-                  <MenuItem mnemonicParsing="false" text="Semestre" />
+              <MenuItem mnemonicParsing="false" onAction="#sortName" text="Nombre" />
+                  <MenuItem mnemonicParsing="false" onAction="#sortLastName" text="Apellido" />
+                  <MenuItem mnemonicParsing="false" onAction="#sortAge" text="Edad" />
+                  <MenuItem mnemonicParsing="false" onAction="#sortSemestre" text="Semestre" />
+                  <MenuItem mnemonicParsing="false" onAction="#sortByCode" text="Codigo" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Opciones">
@@ -40,7 +41,6 @@
                   <MenuItem fx:id="AgregarContact" mnemonicParsing="false" onAction="#fillData" text="Agregar" />
             </items>
           </Menu>
-          <Menu fx:id="salirOption" mnemonicParsing="false" onMenuValidation="#cerrarAgenda" text="Salir" />
         </menus>
       </MenuBar>
       <Button fx:id="next" layoutX="708.0" layoutY="505.0" mnemonicParsing="false" onAction="#nextPage" prefHeight="24.0" prefWidth="30.0" text="&gt;">
