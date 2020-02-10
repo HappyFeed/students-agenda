@@ -13,12 +13,22 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import model.Contact;
 
 public class AgendaController {
 
+	private static final String SAVE_PLAYERS="dataSave/users.ps";
+	public static final String SER_FILE="playerSave/games.ps";
+	
 	ArrayList<Contact> friends;
 	
     @FXML
@@ -334,8 +344,41 @@ public class AgendaController {
                 } 
     }
     
+	@SuppressWarnings("unchecked")
+	public ArrayList<Contact> load(){
+    	ArrayList<Contact> savedUsers= new ArrayList<Contact>();
+    	try {    		
+    		File archivo= new File(SAVE_PLAYERS);
+    		if(archivo.exists()) {
+			  ObjectInputStream ois= new ObjectInputStream(new FileInputStream(archivo));
+			  savedUsers=(ArrayList<Contact>) ois.readObject();
+			  ois.close();
+    		}else {
+    			savedUsers= new ArrayList<Contact>();
+    		}        		         	
+		} catch (IOException e ) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+    	return savedUsers;
+    }
     
-    
+	public void save() {
+		  ObjectOutputStream oos;
+			try {
+				oos = new ObjectOutputStream(new FileOutputStream(SER_FILE));
+				oos.writeObject(friends);
+				oos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
     @FXML
     void initialize() {
     	friends= new ArrayList<Contact>();
