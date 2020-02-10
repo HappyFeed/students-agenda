@@ -99,18 +99,23 @@ public class AgendaController {
     	int value;
     	switch(parametroBusqueda) {
     		case "Nombre":
+    			sortByNames();
     			value = binarySearchName(friends, 0, friends.size()-1, barraBusqueda.getText());
     			break;
     		case "Apellido":
+    			sortByLastnames();
     			value = binarySearchLastName(friends, 0, friends.size()-1, barraBusqueda.getText());
     			break;
     		case "Edad":
+    			sortByAge();
     			value = binarySearchAge(friends, 0, friends.size()-1, Integer.parseInt(barraBusqueda.getText()));
     			break;
     		case "Codigo":
+    			sortByCode();
     			value = binarySearchCode(friends, 0, friends.size()-1, barraBusqueda.getText());
     			break;
     		case "Semestre":
+    			sortBySemester();
     			value = binarySearchSemester(friends, 0, friends.size()-1, barraBusqueda.getText());
     			break;
     		default:
@@ -118,10 +123,17 @@ public class AgendaController {
     			break;
     	}
     	if(value==-1) {
-    		System.out.println("No Existe");
+    		barraBusqueda.setText("No existe");
     	}else {
-    		friends.get(value).getName();
+    		labelApellidoContacto.setText(friends.get(value).getLastName());
+        	labelCodigo.setText(friends.get(value).getCode());
+        	labelEdadContacto.setText(""+friends.get(value).getAge());
+        	labelNombreContacto.setText(friends.get(value).getName());
+        	labelSemestre.setText(friends.get(value).getSemester());
+        	LabelCarrera.setText(friends.get(value).getCarrera());
+        	barraBusqueda.setText("");
     	}
+    	
     }
  
 
@@ -131,7 +143,9 @@ public class AgendaController {
     }
     @FXML
     void delatedData(ActionEvent event) {
-
+    	int nDelated= Integer.parseInt(contactNumber.getText())-1;
+    	friends.remove(nDelated);
+    	save();
     }
 
     @FXML
@@ -320,7 +334,7 @@ public class AgendaController {
         return -1; 
     }
     
-    public void sortByNames(ArrayList<Contact> friends) { 
+    public void sortByNames() { 
         int n = friends.size(); 
         for (int i = 0; i < n-1; i++) 
             for (int j = 0; j < n-i-1; j++) 
@@ -333,7 +347,7 @@ public class AgendaController {
                 } 
     }
     
-    public void sortByLastnames(ArrayList<Contact> friends) { 
+    public void sortByLastnames() { 
         int n = friends.size(); 
         for (int i = 0; i < n-1; i++) 
             for (int j = 0; j < n-i-1; j++) 
@@ -346,7 +360,7 @@ public class AgendaController {
                 } 
     }
     
-    public void sortByAge(ArrayList<Contact> friends) { 
+    public void sortByAge() { 
         int n = friends.size(); 
         for (int i = 0; i < n-1; i++) 
             for (int j = 0; j < n-i-1; j++) 
@@ -359,7 +373,7 @@ public class AgendaController {
                 } 
     }
     
-    public void sortByCode(ArrayList<Contact> friends) { 
+    public void sortByCode() { 
         int n = friends.size(); 
         for (int i = 0; i < n-1; i++) 
             for (int j = 0; j < n-i-1; j++) 
@@ -372,7 +386,7 @@ public class AgendaController {
                 } 
     }
     
-    public void sortBySemester(ArrayList<Contact> friends) { 
+    public void sortBySemester() { 
         int n = friends.size(); 
         for (int i = 0; i < n-1; i++) 
             for (int j = 0; j < n-i-1; j++) 
