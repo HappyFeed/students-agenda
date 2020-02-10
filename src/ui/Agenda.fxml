@@ -92,5 +92,6 @@
       <TextField fx:id="labelApellidoContacto" layoutX="167.0" layoutY="134.0" promptText="Apellido" />
       <TextField fx:id="labelEdadContacto" layoutX="167.0" layoutY="173.0" promptText="Edad" />
       <Button layoutX="155.0" layoutY="460.0" mnemonicParsing="false" onAction="#agregarMateria" text="Agregar Materia" />
+      <Button fx:id="elimanarMateria" layoutX="349.0" layoutY="460.0" mnemonicParsing="false" onAction="#delated" prefHeight="25.0" prefWidth="102.0" text="Eliminar materia" />
    </children>
 </Pane>

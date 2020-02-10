@@ -70,6 +70,9 @@ public class AgendaController {
     private MenuItem borrarContact;
 
     @FXML
+    private Button elimanarMateria;
+    
+    @FXML
     private MenuItem AgregarContact;
 
     @FXML
@@ -194,6 +197,7 @@ public class AgendaController {
         	clear();
         	showTable();
         }
+        elimanarMateria.setVisible(false);
     }
 
     @FXML
@@ -204,6 +208,7 @@ public class AgendaController {
         	clear();
         	showTable();
         }
+        elimanarMateria.setVisible(false);
     }
     
     public void showTable() {
@@ -244,6 +249,7 @@ public class AgendaController {
     	Image n=new Image(new File("profilePic/pic6.png").toURI().toString());
     	fotoContact.setImage(n);
     	textAreaMaterias.getItems().clear();
+    	informations.setText("");
     }
     
     @FXML
@@ -450,10 +456,8 @@ public class AgendaController {
 			  ObjectInputStream ois= new ObjectInputStream(new FileInputStream(archivo));
 			  savedUsers=(ArrayList<Contact>) ois.readObject();
 			  ois.close();
-			  System.out.println(savedUsers.size());
     		}else {
     			savedUsers= readFirst();
-    			System.out.println(savedUsers.size());
     		}        		         	
 		} catch (IOException e ) {
 			e.printStackTrace();
@@ -528,7 +532,7 @@ public class AgendaController {
     	LabelCarrera.setDisable(true);
     	fotoContact.setDisable(true);
     	contactNumber.setText("1");
-    	
+    	elimanarMateria.setVisible(false);
     	//ComboBox Information: the paramater which is going to be searching
     	comboBoxBusqueda.getItems().add("Nombre");
     	comboBoxBusqueda.getItems().add("Apellido");
@@ -664,8 +668,20 @@ public class AgendaController {
     @FXML
     void showSubjectInformation(MouseEvent event) {
     	friends.get(Integer.parseInt(contactNumber.getText())-1).sortByNames();
+    	int pos = textAreaMaterias.getEditingIndex();
+    	String nameSubject = textAreaMaterias.getItems().get(pos+1);
     	int n=friends.get(Integer.parseInt(contactNumber.getText())-1).binarySearchSubject(friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject(), 0, friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().size()-1,nameSubject );
     	informations.setText(friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().get(n).getInfo());
+    	elimanarMateria.setVisible(true);
     }
+    
+
+    @FXML
+    void delated(ActionEvent event) {
+    	int pos = textAreaMaterias.getEditingIndex()+1;
+    	friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().remove(pos);
+    }
+    
+    
 }
 
