@@ -24,6 +24,7 @@ public class Contact implements Serializable{
 		this.lastName=lastName;
 		this.age=age;
 		this.carrera=carrera;
+		this.avatar=avatar;
 	}
 
 

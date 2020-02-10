@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.BufferedReader;
@@ -97,7 +98,8 @@ public class AgendaController {
     void buscarContacto(ActionEvent event) {
     	String parametroBusqueda = comboBoxBusqueda.getValue();
     	int value;
-    	switch(parametroBusqueda) {
+    	if(parametroBusqueda!=null) {
+        	switch(parametroBusqueda) {
     		case "Nombre":
     			sortByNames();
     			value = binarySearchName(friends, 0, friends.size()-1, barraBusqueda.getText());
@@ -131,8 +133,16 @@ public class AgendaController {
         	labelNombreContacto.setText(friends.get(value).getName());
         	labelSemestre.setText(friends.get(value).getSemester());
         	LabelCarrera.setText(friends.get(value).getCarrera());
+        	Image n=whichIs(friends.get(value).getName());
+        	if(n!=null) {
+        		fotoContact.setImage(n);
+        	}
         	barraBusqueda.setText("");
     	}
+    	}else {
+    		
+    	}
+
     	
     }
  
@@ -140,6 +150,7 @@ public class AgendaController {
     void delatedData(ActionEvent event) {
     	int nDelated= Integer.parseInt(contactNumber.getText())-1;
     	friends.remove(nDelated);
+    	clear();
     	save();
     }
 
@@ -186,7 +197,12 @@ public class AgendaController {
     	        	labelEdadContacto.setText(""+friends.get(i).getAge());
     	        	labelNombreContacto.setText(friends.get(i).getName());
     	        	labelSemestre.setText(friends.get(i).getSemester());
-    	        	LabelCarrera.setText(friends.get(i).getCarrera());  	    
+    	        	LabelCarrera.setText(friends.get(i).getCarrera());  
+    	        	Image n=whichIs(friends.get(i).getName());
+    	        	if(n!=null) {
+    	        		fotoContact.setImage(n);
+    	        	}
+    	        	
     		    }
     	    }
 		}
@@ -199,6 +215,8 @@ public class AgendaController {
     	labelNombreContacto.setText("");
     	labelSemestre.setText("");
     	LabelCarrera.setText("");
+    	Image n=new Image(new File("profilePic/pic6.png").toURI().toString());
+    	fotoContact.setImage(n);
     }
     
     @FXML
@@ -253,6 +271,8 @@ public class AgendaController {
     	}
     	save();
     }
+    
+
     
     public int binarySearchName(ArrayList<Contact> friends, int l, int r, String x){ 
         if (r >= l) { 
@@ -400,6 +420,7 @@ public class AgendaController {
     	try {    		
     		File archivo= new File(SAVE_PLAYERS);
     		if(archivo.exists()) {
+    		  System.out.println("entro");
 			  ObjectInputStream ois= new ObjectInputStream(new FileInputStream(archivo));
 			  savedUsers=(ArrayList<Contact>) ois.readObject();
 			  ois.close();
@@ -446,7 +467,27 @@ public class AgendaController {
 		br.close();
 		return n;
 	}
-	
+	public Image whichIs(String name) {
+		Image n= null;
+		switch(name) {
+		case "Alejandro":
+			n=new Image(new File("profilePic/pic 1.jpg").toURI().toString());
+			break;
+		case "Jose":
+			n=new Image(new File("profilePic/pic5.png").toURI().toString());
+			break;
+		case "Jairo":
+			n=new Image(new File("profilePic/pic4.png").toURI().toString());
+			break;
+		case "Cristian":
+			n=new Image(new File("profilePic/pic3.jpg").toURI().toString());
+			break;	
+		case "Juanito":
+			n=new Image(new File("profilePic/pic2.jpg").toURI().toString());
+			break;	
+		}
+		return n;
+	}
     @FXML
     void initialize() {
     	friends= load();
@@ -469,7 +510,7 @@ public class AgendaController {
     	
     	//The information for the listView where the contacts are going to be shown
     	textAreaMaterias.setItems(list);
-    	
+    	save();
     }
     
 
