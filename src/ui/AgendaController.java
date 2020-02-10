@@ -13,10 +13,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,7 +29,8 @@ import model.Contact;
 public class AgendaController {
 
 	private static final String SAVE_PLAYERS="dataSave/users.ps";
-	public static final String SER_FILE="playerSave/games.ps";
+	private static final String FIRST_USERS="dataSave/data_users.csv";
+	public static final String SER_FILE="dataSave/users.ps";
 	
 	ArrayList<Contact> friends;
 	
@@ -192,16 +195,19 @@ public class AgendaController {
     	m.setName(labelNombreContacto.getText());
     	m.setLastName(labelApellidoContacto.getText());
     	m.setSemester(labelSemestre.getText());
+    	m.setCarrera(LabelCarrera.getText());
+    	save();
     }
     
     public void guardarContacto() {
     	contactNumber.setText(""+friends.size());
-    	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelNombreContacto.getText(),Integer.parseInt(labelEdadContacto.getText()));
+    	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelApellidoContacto.getText(),Integer.parseInt(labelEdadContacto.getText()),LabelCarrera.getText());
     	friends.add(friends.size(),newContact);
     	contactNumber.setText(""+(friends.size()+1));
     	if(friends !=null) {
     		System.out.println("guardo");
     	}
+    	save();
     }
     
     public int binarySearchName(ArrayList<Contact> friends, int l, int r, String x){ 
@@ -379,9 +385,26 @@ public class AgendaController {
 			}
 	}
 	
+	public void readFirst() throws IOException {
+		File file = new File(FIRST_USERS);
+		FileReader fileReader = new FileReader(file);
+		BufferedReader br = new BufferedReader(fileReader);
+		String line = br.readLine();
+		line = br.readLine();
+		while(line != null){
+			String[] parts = line.split(",");
+			Contact m= new Contact(parts[0],parts[4],parts[1],parts[2],Integer.parseInt(parts[3]),parts[5]);
+			friends.add(m);
+			line = br.readLine();
+		}
+		fileReader.close();
+		br.close();
+		
+	}
+	
     @FXML
     void initialize() {
-    	friends= new ArrayList<Contact>();
+    	friends= load();
     	buttonGuardar.setVisible(false);
     	labelApellidoContacto.setDisable(true);
     	labelCodigo.setDisable(true);

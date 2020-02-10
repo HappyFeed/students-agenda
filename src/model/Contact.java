@@ -1,22 +1,29 @@
 package model;
 
+import java.io.Serializable;
+
 import javafx.scene.image.Image;
 
-public class Contact {
+@SuppressWarnings("serial")
+public class Contact implements Serializable{
 
 	private Image avatar;
 	private String code;
 	private String semester;
 	private String name;
 	private String lastName;
+	private String carrera;
 	private int age;
 
-	public Contact(String code, String semester, String name, String lastName, int age) {
+	private Subject subjects;
+	
+	public Contact(String code, String semester, String name, String lastName, int age, String carrera) {
 		this.code=code;
 		this.semester=semester;
 		this.name=name;
 		this.lastName=lastName;
 		this.age=age;
+		this.carrera=carrera;
 	}
 
 
@@ -32,6 +39,19 @@ public class Contact {
 		this.avatar = avatar;
 	}
 
+	public String getCarrera() {
+		return this.carrera;
+	}
+
+	/**
+	 * 
+	 * @param carrera
+	 */
+	public void setCarrera(String carrera) {
+		this.carrera = carrera;
+	}
+
+	
 	public String getCode() {
 		return this.code;
 	}
