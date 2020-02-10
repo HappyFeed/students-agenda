@@ -149,12 +149,47 @@ public class AgendaController {
 
     @FXML
     void nextPage(ActionEvent event) {
-
+    	int newPage= Integer.parseInt(contactNumber.getText())+1;
+        if(newPage<(friends.size()+2)) {
+        	contactNumber.setText(newPage+"");
+        	clear();
+        	showTable();
+        }
     }
 
     @FXML
     void previewContact(ActionEvent event) {
-
+        int newPage= Integer.parseInt(contactNumber.getText())-1;
+        if(newPage>0) {
+        	contactNumber.setText(newPage+"");
+        	clear();
+        	showTable();
+        }
+    }
+    
+    public void showTable() {
+       	int pages=(friends.size());
+    	for(int j=0;j<pages;j++){
+    		if(j+1==Integer.parseInt(contactNumber.getText())){
+    	    	for (int i = (1*j); i <1+(1*j) && i<friends.size(); i++) {
+    	    		labelApellidoContacto.setText(friends.get(i).getLastName());
+    	        	labelCodigo.setText(friends.get(i).getCode());
+    	        	labelEdadContacto.setText(""+friends.get(i).getAge());
+    	        	labelNombreContacto.setText(friends.get(i).getName());
+    	        	labelSemestre.setText(friends.get(i).getSemester());
+    	        	LabelCarrera.setText(friends.get(i).getCarrera());  	    
+    		    }
+    	    }
+		}
+    }
+    
+    public void clear() {
+    	labelApellidoContacto.setText("");
+    	labelCodigo.setText("");
+    	labelEdadContacto.setText("");
+    	labelNombreContacto.setText("");
+    	labelSemestre.setText("");
+    	LabelCarrera.setText("");
     }
     
     @FXML
@@ -360,7 +395,7 @@ public class AgendaController {
 			  savedUsers=(ArrayList<Contact>) ois.readObject();
 			  ois.close();
     		}else {
-    			savedUsers= new ArrayList<Contact>();
+    			savedUsers= readFirst();
     		}        		         	
 		} catch (IOException e ) {
 			e.printStackTrace();
@@ -385,7 +420,8 @@ public class AgendaController {
 			}
 	}
 	
-	public void readFirst() throws IOException {
+	public ArrayList<Contact> readFirst() throws IOException {
+		ArrayList<Contact> n= new ArrayList<Contact>();
 		File file = new File(FIRST_USERS);
 		FileReader fileReader = new FileReader(file);
 		BufferedReader br = new BufferedReader(fileReader);
@@ -394,12 +430,12 @@ public class AgendaController {
 		while(line != null){
 			String[] parts = line.split(",");
 			Contact m= new Contact(parts[0],parts[4],parts[1],parts[2],Integer.parseInt(parts[3]),parts[5]);
-			friends.add(m);
+			n.add(m);
 			line = br.readLine();
 		}
 		fileReader.close();
 		br.close();
-		
+		return n;
 	}
 	
     @FXML
