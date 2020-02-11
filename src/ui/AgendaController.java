@@ -18,15 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
@@ -40,7 +36,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import model.Contact;
 import model.Subject;
@@ -663,7 +658,7 @@ public class AgendaController {
     	// Request focus on the username field by default.
     	Platform.runLater(() -> nombre.requestFocus());
 
-    	Optional<Pair<String, String>> result = dialog.showAndWait();
+    	dialog.showAndWait();
     	
     	String name = nombre.getText();
     	String NRC = nrc.getText();
@@ -744,7 +739,16 @@ public class AgendaController {
     
     @FXML
     void mostrarReporte(ActionEvent event) {
-    	
+    	Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setTitle("Reporte de Materias");
+    	alert.setHeaderText("Este es el resumen de la informacion referente a las materias");
+    	String informacion = "Materia menos Matriculada: "+indexMateriaLess()+"\n"
+    			 			+"Materia mas Matriculada: "+indexMateriaTop()+"\n"
+    			 			+"Promedio Materias: "+promedioMaterias()+"\n"
+    						+"Promedio de Creditos: "+primedioCreditos()+"\n";
+    	alert.setContentText(informacion);
+
+    	alert.showAndWait();
     }
 
     
