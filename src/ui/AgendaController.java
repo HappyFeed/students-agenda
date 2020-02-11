@@ -25,6 +25,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
@@ -50,6 +52,7 @@ public class AgendaController {
 	public static final String SER_FILE="dataSave/users.ps";
 	
 	ArrayList<Contact> friends;
+	ArrayList<Subject> subjects;
 	
     @FXML
     private ImageView fotoContact;
@@ -113,6 +116,10 @@ public class AgendaController {
     
     @FXML
     private Menu sortBy;
+    
+    @FXML
+    private Button buttonReport;
+    
     
     ObservableList<String> list = FXCollections.observableArrayList();
 
@@ -523,13 +530,20 @@ public class AgendaController {
     @FXML
     void initialize() {
     	friends= load();
+    	subjects = new ArrayList<Subject>();
     	buttonGuardar.setVisible(false);
     	labelApellidoContacto.setDisable(true);
+    	labelApellidoContacto.setOpacity(1);
     	labelCodigo.setDisable(true);
+    	labelCodigo.setOpacity(1);
     	labelEdadContacto.setDisable(true);
+    	labelEdadContacto.setOpacity(1);
     	labelNombreContacto.setDisable(true);
+    	labelNombreContacto.setOpacity(1);
     	labelSemestre.setDisable(true);
+    	labelSemestre.setOpacity(1);
     	LabelCarrera.setDisable(true);
+    	LabelCarrera.setOpacity(1);
     	fotoContact.setDisable(true);
     	contactNumber.setText("1");
     	elimanarMateria.setVisible(false);
@@ -663,7 +677,76 @@ public class AgendaController {
     void guardarMateria(String name, String NRC, String Info, int credits) {
     	Subject sub = new Subject(name, credits, NRC, Info);
     	friends.get(Integer.parseInt(contactNumber.getText())-1).setSubject(sub);
+    	if(!subjects.contains(sub)) {
+    		subjects.add(sub);
+    	}
     }
+    
+    int promedioMaterias() {
+    	int suma = 0;
+    	for(int i=0; i<friends.size(); i++) {
+    		suma += friends.get(i).getSubject().size();
+    	}
+    	int result = suma/friends.size();
+    	return result;
+    }
+    
+    int primedioCreditos() {
+    	int suma = 0;
+    	for(int i=0; i<friends.size(); i++) {
+    		for(int j=0; j<friends.get(i).getSubject().size(); j++) {
+    			suma += friends.get(i).getSubject().get(j).getCredits();
+    		}
+    	}
+    	int result = suma/friends.size();
+    	return result;
+    }
+    
+    int indexMateriaTop() {
+    	int indexMateria = 0;
+    	int mayor = 0;
+    	int count = 0;
+    	for(int i=0; i<subjects.size(); i++) {
+    		for(int j=0; j<friends.size(); j++) {
+    			for(int k=0; k<friends.get(j).getSubject().size(); k++) {
+    				if(friends.get(j).getSubject().get(i).getName().equals(subjects.get(i).getName())) {
+    					count++;
+    				}
+    			}
+    		}
+    		if(count>mayor) {
+    			mayor = count;
+    			indexMateria = i;
+    		}
+    	}
+    	return indexMateria;
+    }
+    
+    int indexMateriaLess() {
+    	int indexMateria = 0;
+    	int menor = Integer.MAX_VALUE;
+    	int count = 0;
+    	for(int i=0; i<subjects.size(); i++) {
+    		for(int j=0; j<friends.size(); j++) {
+    			for(int k=0; k<friends.get(j).getSubject().size(); k++) {
+    				if(friends.get(j).getSubject().get(i).getName().equals(subjects.get(i).getName())) {
+    					count++;
+    				}
+    			}
+    		}
+    		if(count<menor) {
+    			menor = count;
+    			indexMateria = i;
+    		}
+    	}
+    	return indexMateria;
+    }
+    
+    @FXML
+    void mostrarReporte(ActionEvent event) {
+    	
+    }
+
     
     @FXML
     void showSubjectInformation(MouseEvent event) {
