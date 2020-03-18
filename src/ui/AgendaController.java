@@ -460,7 +460,14 @@ public class AgendaController {
 			  ois.close();
     		}else {
     			savedUsers= readFirst();
-    		}        		         	
+    		}
+    		for (int i = 0; i < savedUsers.size(); i++) {
+    			for (int j = 0; j < savedUsers.get(i).getSubject().size(); j++) {
+    				if(!subjects.contains(savedUsers.get(i).getSubject().get(j))) {
+    		    		subjects.add(savedUsers.get(i).getSubject().get(j));
+    		    	}
+				}
+			}
 		} catch (IOException e ) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
