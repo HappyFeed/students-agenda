@@ -492,8 +492,8 @@ public class AgendaController {
 		String line = br.readLine();
 		line = br.readLine();
 		while(line != null){
-			String[] parts = line.split(",");
-			Contact m= new Contact(parts[0],parts[4],parts[1],parts[2],Integer.parseInt(parts[3]),parts[5]);
+			String[] parts = line.split(";");
+			Contact m= new Contact(parts[4],parts[9],parts[0],parts[1],Integer.parseInt(parts[8]),parts[5]);
 			n.add(m);
 			line = br.readLine();
 		}
