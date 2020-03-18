@@ -704,7 +704,7 @@ public class AgendaController {
     	for(int i=0; i<subjects.size(); i++) {
     		for(int j=0; j<friends.size(); j++) {
     			for(int k=0; k<friends.get(j).getSubject().size(); k++) {
-    				if(friends.get(j).getSubject().get(i).getName().equals(subjects.get(i).getName())) {
+    				if(friends.get(j).getSubject().get(k).getName().equals(subjects.get(i).getName())) {
     					count++;
     				}
     			}
@@ -724,7 +724,7 @@ public class AgendaController {
     	for(int i=0; i<subjects.size(); i++) {
     		for(int j=0; j<friends.size(); j++) {
     			for(int k=0; k<friends.get(j).getSubject().size(); k++) {
-    				if(friends.get(j).getSubject().get(i).getName().equals(subjects.get(i).getName())) {
+    				if(friends.get(j).getSubject().get(k).getName().equals(subjects.get(i).getName())) {
     					count++;
     				}
     			}
@@ -742,8 +742,8 @@ public class AgendaController {
     	Alert alert = new Alert(AlertType.INFORMATION);
     	alert.setTitle("Reporte de Materias");
     	alert.setHeaderText("Este es el resumen de la informacion referente a las materias");
-    	String informacion = "Materia menos Matriculada: "+indexMateriaLess()+"\n"
-    			 			+"Materia mas Matriculada: "+indexMateriaTop()+"\n"
+    	String informacion = "Materia menos Matriculada: "+subjects.get(indexMateriaLess()).getName()+"\n"
+    			 			+"Materia mas Matriculada: "+subjects.get(indexMateriaTop()).getName()+"\n"
     			 			+"Promedio Materias: "+promedioMaterias()+"\n"
     						+"Promedio de Creditos: "+primedioCreditos()+"\n";
     	alert.setContentText(informacion);
