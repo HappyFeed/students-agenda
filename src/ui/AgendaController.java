@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -696,24 +695,25 @@ public class AgendaController {
     	save();
     }
     
-    long promedioMaterias() {
-    	int suma = 0;
+    float promedioMaterias() {
+    	float suma = 0;
+    	float result;
     	for(int i=0; i<friends.size(); i++) {
     		suma += friends.get(i).getSubject().size();
     	}
-    	System.out.println(suma+" /"+friends.size());
-    	long result = suma/friends.size();
+    	result = suma / (float)(friends.size());
     	return result;
     }
     
-    long primedioCreditos() {
-    	int suma = 0;
+    float primedioCreditos() {
+    	float suma = 0;
+    	float result;
     	for(int i=0; i<friends.size(); i++) {
     		for(int j=0; j<friends.get(i).getSubject().size(); j++) {
     			suma += friends.get(i).getSubject().get(j).getCredits();    			
     		}
-    	}
-    	long result = suma/friends.size();
+    	}  	
+    	result = suma /(float) (friends.size());
     	return result;
     }
     
@@ -726,6 +726,7 @@ public class AgendaController {
     			for(int k=0; k<friends.get(j).getSubject().size(); k++) {
     				if(friends.get(j).getSubject().get(k).getName().equals(subjects.get(i).getName())) {
     					count++;
+    					System.out.println(friends.get(j).getSubject().get(k).getName());
     				}
     			}
     		}
@@ -733,6 +734,7 @@ public class AgendaController {
     			mayor = count;
     			indexMateria = i;
     		}
+    		count = 0;
     	}
     	return indexMateria;
     }
@@ -753,6 +755,7 @@ public class AgendaController {
     			menor = count;
     			indexMateria = i;
     		}
+    		count = 0;
     	}
     	return indexMateria;
     }
