@@ -673,6 +673,7 @@ public class AgendaController {
     	int credits = Integer.parseInt(creditos.getText());
     	
     	guardarMateria(name, NRC, Info, credits);
+    	save();
 
     }
     
@@ -682,6 +683,7 @@ public class AgendaController {
     	if(!subjects.contains(sub)) {
     		subjects.add(sub);
     	}
+    	save();
     }
     
     int promedioMaterias() {
@@ -774,6 +776,7 @@ public class AgendaController {
     void delated(ActionEvent event) {
     	int pos = textAreaMaterias.getEditingIndex()+1;
     	friends.get(Integer.parseInt(contactNumber.getText())-1).getSubject().remove(pos);
+    	save();
     }
     
     
