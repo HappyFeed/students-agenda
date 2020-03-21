@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 @SuppressWarnings("serial")
 public class Contact implements Serializable{
 
-	private Image avatar;
+	private String avatar;
 	private String code;
 	private String semester;
 	private String name;
@@ -18,7 +18,7 @@ public class Contact implements Serializable{
 
 	private ArrayList<Subject> subjects;
 	
-	public Contact(String code, String semester, String name, String lastName, int age, String carrera) {
+	public Contact(String code, String semester, String name, String lastName, int age, String carrera, String avatar) {
 		this.code=code;
 		this.semester=semester;
 		this.name=name;
@@ -30,7 +30,7 @@ public class Contact implements Serializable{
 	}
 
 
-	public Image getAvatar() {
+	public String getAvatar() {
 		return this.avatar;
 	}
 
@@ -38,7 +38,7 @@ public class Contact implements Serializable{
 	 * 
 	 * @param avatar
 	 */
-	public void setAvatar(Image avatar) {
+	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 

@@ -33,8 +33,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import model.Contact;
@@ -192,7 +196,7 @@ public class AgendaController {
     }
 
     @FXML
-    void nextPage(ActionEvent event) {
+    void nextPage(ActionEvent event) throws IOException {
     	int newPage= Integer.parseInt(contactNumber.getText())+1;
         if(newPage<(friends.size()+2)) {
         	contactNumber.setText(newPage+"");
@@ -203,7 +207,7 @@ public class AgendaController {
     }
 
     @FXML
-    void previewContact(ActionEvent event) {
+    void previewContact(ActionEvent event) throws IOException {
         int newPage= Integer.parseInt(contactNumber.getText())-1;
         if(newPage>0) {
         	contactNumber.setText(newPage+"");
@@ -213,7 +217,8 @@ public class AgendaController {
         elimanarMateria.setVisible(false);
     }
     
-    public void showTable() {
+    public void showTable()  {
+    	try {
        	int pages=(friends.size());
     	for(int j=0;j<pages;j++){
     		if(j+1==Integer.parseInt(contactNumber.getText())){
@@ -223,21 +228,26 @@ public class AgendaController {
     	        	labelEdadContacto.setText(""+friends.get(i).getAge());
     	        	labelNombreContacto.setText(friends.get(i).getName());
     	        	labelSemestre.setText(friends.get(i).getSemester());
-    	        	LabelCarrera.setText(friends.get(i).getCarrera());  
-    	        	Image n=whichIs(friends.get(i).getName());
+    	        	LabelCarrera.setText(friends.get(i).getCarrera()); 
+    	        	if(!friends.get(i).getAvatar().isEmpty()) {  	        		
+    	        		URL url = new URL(friends.get(i).getAvatar());
+        				URLConnection conn = url.openConnection();
+        				InputStream in = conn.getInputStream();
+        	        	Image n=new Image(in);
+        	        	fotoContact.setImage(n);
+    	        	}  	        	
     	        	if(friends.get(i).getSubject()!=null) {
         	        	for (int k = 0; k < friends.get(i).getSubject().size(); k++) {
         	        		textAreaMaterias.getItems().add(friends.get(i).getSubject().get(k).getName());	
     					}
     	        	}
-
-    	        	
-    	        	if(n!=null) {
-    	        		fotoContact.setImage(n);
-    	        	}
     	        	
     		    }
     	    }
+		}
+    	} catch (IOException e) {
+
+			e.printStackTrace();
 		}
     }
     
@@ -298,7 +308,7 @@ public class AgendaController {
     
     public void guardarContacto() {
     	contactNumber.setText(""+friends.size());
-    	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelApellidoContacto.getText(),Integer.parseInt(labelEdadContacto.getText()),LabelCarrera.getText());
+    	Contact newContact= new Contact(labelCodigo.getText(),labelSemestre.getText(),labelNombreContacto.getText(),labelApellidoContacto.getText(),Integer.parseInt(labelEdadContacto.getText()),LabelCarrera.getText(),null);
     	friends.add(friends.size(),newContact);
     	contactNumber.setText(""+(friends.size()+1));
     	if(friends !=null) {
@@ -500,7 +510,7 @@ public class AgendaController {
 		line = br.readLine();
 		while(line != null){
 			String[] parts = line.split(";");
-			Contact m= new Contact(parts[4],parts[9],parts[0],parts[1],Integer.parseInt(parts[8]),parts[5]);
+			Contact m= new Contact(parts[4],parts[9],parts[0],parts[1],Integer.parseInt(parts[8]),parts[5],parts[6]);
 			n.add(m);
 			line = br.readLine();
 		}
@@ -531,8 +541,8 @@ public class AgendaController {
 	}
     @FXML
     void initialize() {
-    	friends= load();
     	subjects = new ArrayList<Subject>();
+    	friends= load();  	
     	buttonGuardar.setVisible(false);
     	labelApellidoContacto.setDisable(true);
     	labelApellidoContacto.setOpacity(1);
@@ -686,23 +696,24 @@ public class AgendaController {
     	save();
     }
     
-    int promedioMaterias() {
+    long promedioMaterias() {
     	int suma = 0;
     	for(int i=0; i<friends.size(); i++) {
     		suma += friends.get(i).getSubject().size();
     	}
-    	int result = suma/friends.size();
+    	System.out.println(suma+" /"+friends.size());
+    	long result = suma/friends.size();
     	return result;
     }
     
-    int primedioCreditos() {
+    long primedioCreditos() {
     	int suma = 0;
     	for(int i=0; i<friends.size(); i++) {
     		for(int j=0; j<friends.get(i).getSubject().size(); j++) {
-    			suma += friends.get(i).getSubject().get(j).getCredits();
+    			suma += friends.get(i).getSubject().get(j).getCredits();    			
     		}
     	}
-    	int result = suma/friends.size();
+    	long result = suma/friends.size();
     	return result;
     }
     
@@ -748,16 +759,24 @@ public class AgendaController {
     
     @FXML
     void mostrarReporte(ActionEvent event) {
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setTitle("Reporte de Materias");
-    	alert.setHeaderText("Este es el resumen de la informacion referente a las materias");
-    	String informacion = "Materia menos Matriculada: "+subjects.get(indexMateriaLess()).getName()+"\n"
-    			 			+"Materia mas Matriculada: "+subjects.get(indexMateriaTop()).getName()+"\n"
-    			 			+"Promedio Materias: "+promedioMaterias()+"\n"
-    						+"Promedio de Creditos: "+primedioCreditos()+"\n";
-    	alert.setContentText(informacion);
+    	if(subjects.size()!=0) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("Reporte de Materias");
+        	alert.setHeaderText("Este es el resumen de la informacion referente a las materias");
+        	String informacion = "Materia menos Matriculada: "+subjects.get(indexMateriaLess()).getName()+"\n"
+        			 			+"Materia mas Matriculada: "+subjects.get(indexMateriaTop()).getName()+"\n"
+        			 			+"Promedio Materias: "+promedioMaterias()+"\n"
+        						+"Promedio de Creditos: "+primedioCreditos()+"\n";
+        	alert.setContentText(informacion);
 
-    	alert.showAndWait();
+        	alert.showAndWait();
+    	}else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("Reporte de Materias");
+        	String informacion = "No hay materias matriculadas";
+        	alert.setContentText(informacion);
+        	alert.showAndWait();
+    	}
     }
 
     
